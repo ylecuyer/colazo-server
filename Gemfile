@@ -4,8 +4,13 @@ gem 'rails', '3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'sqlite3'
+group :development do
+  gem 'sqlite3'
+end
+# Rails 3.1 can use the latest mysql2 gem.
+group :production do
+  gem 'mysql2'
+end
 
 
 # Gems used only for assets and not required
