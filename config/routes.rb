@@ -1,4 +1,6 @@
 Colazoserver::Application.routes.draw do
+
+	get 'places/last_update.json' => 'places#last_update'	
   resources :places
 
 
