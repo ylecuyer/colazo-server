@@ -41,3 +41,5 @@ gem 'jquery-rails'
 
 # To use debugger
 # gem 'debugger'
+
+gem 'rails-settings-cached', '0.2.4'

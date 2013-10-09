@@ -4,15 +4,17 @@ class PlacesController < ApplicationController
 
   # GET /last_update.json
   def last_update
-    @last_updated_at = Place.last_update
- 
-    render json: {:last_update => @last_updated_at.to_i}
+    @last_update = Settings.places_last_update
+
+    render json: {:last_update => @last_update}
   end
 
   # GET /places
   # GET /places.json
   def index
     @places = Place.all
+
+    @last_update = Settings.places_last_update
 
     respond_to do |format|
       format.html # index.html.erb
@@ -52,8 +54,12 @@ class PlacesController < ApplicationController
   def create
     @place = Place.new(params[:place])
 
+    @saved = @place.save
+
+    if @saved then Setting.places_last_update = Time.now.to_i end
+
     respond_to do |format|
-      if @place.save
+      if @saved
         format.html { redirect_to @place, notice: 'Place was successfully created.' }
         format.json { render json: @place, status: :created, location: @place }
       else
@@ -68,8 +74,12 @@ class PlacesController < ApplicationController
   def update
     @place = Place.find(params[:id])
 
+    @updated = @place.update_attributes(params[:place])
+
+    if @updated then Settings.places_last_update = Time.now.to_i end
+
     respond_to do |format|
-      if @place.update_attributes(params[:place])
+      if @updated 
         format.html { redirect_to @place, notice: 'Place was successfully updated.' }
         format.json { head :no_content }
       else
@@ -84,6 +94,8 @@ class PlacesController < ApplicationController
   def destroy
     @place = Place.find(params[:id])
     @place.destroy
+
+    Settings.places_last_update = Time.now.to_i
 
     respond_to do |format|
       format.html { redirect_to places_url }
