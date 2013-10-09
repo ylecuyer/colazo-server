@@ -1,11 +1,13 @@
 class PlacesController < ApplicationController
 
-	# GET /last_update.json
-	def last_update
-		@last_updated_at = Place.last_update
+  skip_before_filter :verify_authenticity_token, :only => [:create]
 
-		render json: {:last_update => @last_updated_at.to_i}
-	end
+  # GET /last_update.json
+  def last_update
+    @last_updated_at = Place.last_update
+ 
+    render json: {:last_update => @last_updated_at.to_i}
+  end
 
   # GET /places
   # GET /places.json
