@@ -28,3 +28,11 @@ production:
   database: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mysql-5.1'].first['credentials']['name'] rescue '' %>
   username: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mysql-5.1'].first['credentials']['username'] rescue '' %>
   password: <%= JSON.parse( ENV['VCAP_SERVICES'] )['mysql-5.1'].first['credentials']['password'] rescue '' %>
+
+proxied-appfog: 
+  adapter: mysql2 
+  database: d33bf07de943242cd8eefc747474c531e 
+  username: u0A5zlHJbfNEQ
+  password: p8eSeSVsgvXf7
+  port: 10000 
+  host: 127.0.0.1

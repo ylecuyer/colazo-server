@@ -1,16 +1,18 @@
 class EventsController < ApplicationController
 
-	# GET /last_update.json
-	def last_update
-		@last_updated_at = Event.last_update
-
-		render json: {:last_update => @last_updated_at.to_i}
-	end
+  # GET /last_update.json
+  def last_update
+    @last_update = Settings.events_last_update
+    
+    render json: {:last_update => @last_update}
+  end
 
   # GET /events
   # GET /events.json
   def index
     @events = Event.all
+
+    @last_update = Settings.events_last_update
 
     respond_to do |format|
       format.html # index.html.erb
@@ -50,8 +52,12 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(params[:event])
 
+    @saved = @event.save
+
+    if @saved then Settings.events_last_update = Time.now.to_i end
+
     respond_to do |format|
-      if @event.save
+      if @saved
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render json: @event, status: :created, location: @event }
       else
@@ -66,8 +72,12 @@ class EventsController < ApplicationController
   def update
     @event = Event.find(params[:id])
 
+    @updated = @event.update_attributes(params[:event])
+
+    if @updated then Settings.events_last_update = Time.now.to_i end
+
     respond_to do |format|
-      if @event.update_attributes(params[:event])
+      if @updated
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { head :no_content }
       else
@@ -82,6 +92,8 @@ class EventsController < ApplicationController
   def destroy
     @event = Event.find(params[:id])
     @event.destroy
+
+    Settings.events_last_update = Time.now.to_i
 
     respond_to do |format|
       format.html { redirect_to events_url }
