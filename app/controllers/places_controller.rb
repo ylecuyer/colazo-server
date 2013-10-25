@@ -56,7 +56,7 @@ class PlacesController < ApplicationController
 
     @saved = @place.save
 
-    if @saved then Setting.places_last_update = Time.now.to_i end
+    if @saved then Settings.places_last_update = Time.now.to_i end
 
     respond_to do |format|
       if @saved
